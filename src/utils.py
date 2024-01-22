@@ -2,8 +2,8 @@ import json
 def parse_menu(text):
     KEYWORDS = ["FIRST", "SECOND", "CONTOUR", "SWEET", "DRINK"]
     
-    # Split the text and filter out possible empty rows
-    tokens = list(filter(lambda s: len(s)>0, text.split("\n")))
+    # Split the text and filter out possible empty rows, remove the first, the command
+    tokens = list(filter(lambda s: len(s)>0, text.split("\n")))[1:]
     
     # The first token must be the menu name
     title = tokens[0].strip()
