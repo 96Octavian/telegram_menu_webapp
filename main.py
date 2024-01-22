@@ -7,6 +7,8 @@ from src import utils as uts
 if __name__ == "__main__":
     BOT_TOKEN = json.load(open("Credentials\\Credentials.json"))["BOT-TOKEN"]
     bot = telebot.TeleBot(BOT_TOKEN)
+    
+    print("Start the bot polling...")
     bot.infinity_polling()
 
 @bot.message_handler(commands=['menu'])
