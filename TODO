@@ -1,0 +1,21 @@
+Poi dovrai anche gestire un messaggio (https://core.telegram.org/bots/api#message) che contiene il campo web_app_data, che è una stringa e credo sarà un JSON da parsare e credo lo farò così: 
+{
+    "code": codice,
+    "scelta 1": quantità,
+    "scelta 2": quantità,
+    etc
+}
+mentre lo user_id dovresti già averlo dal messaggio
+
+E poi il comando "/ordine", fai finta di avere un dizionario fatto così:
+{
+    "user_id_1": {
+      "scelta 1": 10, "scelta 2": 2
+    },
+    "user_id_2": {
+      "scelta 1": 5, "scelta 2": 105
+    }
+}
+e da questo dizionario devi creare un messaggio tipo
+"scelta 1: 15
+scelta 2: 107"

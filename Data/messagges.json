@@ -1,0 +1,4 @@
+{
+    "help" : "Hi there, I'm your super fantastic menu bot! Let me explain my commands!",
+    "menu" : "/menu: followed by the menu that you want to insert in the format of \nMENU TITLE\nFIRST\nplate\n...\nplate\n\nSECOND\nplate\n...\nplate\n\nCONTOUR\nplate\n...\npalte\n\nSWEET\nsweet\n..\nsweet\n\nDRINK\ndrink\n...\ndrink\n\n It is important to respect the upper case keywords. You don't have to put all of them, but they must be written in the same way."
+}
