@@ -3,7 +3,7 @@ def parse_menu(text):
     KEYWORDS = ["FIRST", "SECOND", "CONTOUR", "SWEET", "DRINK"]
     
     # Split the text and filter out possible empty rows
-    tokens = filter(lambda s: len(s)>0, text.split("\n"))
+    tokens = list(filter(lambda s: len(s)>0, text.split("\n")))
     
     # The first token must be the menu name
     title = tokens[0].strip()
@@ -27,6 +27,8 @@ def parse_menu(text):
             
     # To add the last one
     menu[title].update({curr_level : curr_dishes})    
+    
+    return menu
     
     
         
