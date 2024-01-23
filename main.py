@@ -33,4 +33,15 @@ if __name__ == "__main__":
         
         bot.reply_to(message, "Menu saved")
     
+    @bot.message_handler(commands=['riassunto'])
+    def help(message):
+        menu_code = message.text.strip()
+        sender = message.chat.id
+        
+        menu_recap = uts.recap(sender, menu_code)
+        
+        bot.reply_to(message, menu_recap)
+    
     bot.infinity_polling()
+    
+    

@@ -1,5 +1,7 @@
 import json
-def parse_menu(text):
+from collections import defaultdict
+
+def parse_menu(text : str) -> dict:
     KEYWORDS = ["FIRST", "SECOND", "CONTOUR", "SWEET", "DRINK"]
     
     # Split the text and filter out possible empty rows, remove the first, the command
@@ -30,7 +32,21 @@ def parse_menu(text):
     
     return menu
     
+def recap(sender : str, menu_code : str) -> str:  
+    orders = json.load(open(".\\Data\\order.json", "r")) 
     
+    # TODO add the selection by sender code
+    orders = orders[menu_code]
+    
+    recap_dict = defaultdict(0)
+    
+    for single_order in orders.values():
+        for plate, amount in single_order.items():
+            recap_dict[plate] += amount
+
+    recap_dict = json.dumps(dict(recap_dict))
+    
+    return recap_dict
         
     
     
