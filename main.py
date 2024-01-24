@@ -45,13 +45,19 @@ if __name__ == "__main__":
 
     @bot.message_handler(commands=['test_menu'])
     def test_menu(message):
-        button = types.InlineKeyboardButton('Order your food!', web_app=types.WebAppInfo('https://96Octavian.github.io/menu_webapp/?code=test_menu'))
+        kb = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+        button = types.KeyboardButton("Place order", web_app=types.WebAppInfo('https://96Octavian.github.io/menu_webapp/?code=test_menu'))
 
-        keyboard = types.InlineKeyboardMarkup()
-        keyboard.add(button)
+        kb = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+        kb.add(button)
 
-        bot.reply_to(message, text='Here is your link to today\'s menu', reply_markup=keyboard)
+        bot.reply_to(message, text='Open the keyboard and press to place your order', reply_markup=kb)
     
+    @bot.message_handler(content_types=['web_app_data'])
+    def handle_any(message):
+        hideBoard = types.ReplyKeyboardRemove()
+        bot.send_message(message.chat.id, message.web_app_data.data, reply_markup=hideBoard)
+
     bot.infinity_polling()
     
     
