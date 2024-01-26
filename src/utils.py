@@ -1,5 +1,8 @@
 import json
 from collections import defaultdict
+import random
+import string
+import requests
 
 def parse_menu(text : str) -> dict:
     KEYWORDS = ["FIRST", "SECOND", "CONTOUR", "SWEET", "DRINK"]
@@ -8,8 +11,9 @@ def parse_menu(text : str) -> dict:
     tokens = list(filter(lambda s: len(s)>0, text.split("\n")))[1:]
     
     # The first token must be the menu name
-    title = tokens[0].strip()
-    menu = { title: {}}
+    # title = tokens[0].strip()
+    title = "Offerings"
+    menu = { "Offerings": {}}
     
     curr_level = ""
     curr_dishes = []
@@ -48,5 +52,24 @@ def recap(sender : str, menu_code : str) -> str:
     
     return recap_dict
         
+def generate_code(menu_codes: list):
+    code = "".join(random.choices(string.ascii_uppercase, k=5)   )
+    while code in menu_codes:
+        code = random.choices(string.ascii_uppercase, k=5) 
     
-    
+    return code
+
+def load_menu(menu_code, menu : dict) -> bool:
+    # Post a new menu (or overwrite one with the same code)
+    try:
+        result = requests.post(
+            f"https://getpantry.cloud/apiv1/pantry/17474c8e-ea5a-4857-a468-744bad4d466b/basket/{menu_code}",
+            data=json.dumps(menu["Offerings"]),
+            headers={"Content-Type":"application/json"}
+        )
+        if result.status_code != requests.codes.ok:
+            return  False
+        else:
+            return True
+    except:
+        return False

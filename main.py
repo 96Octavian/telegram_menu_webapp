@@ -1,61 +1,12 @@
-import json
-import os
 import telebot
 from telebot import types
 from src import utils as uts
-from typing import Dict
-
-
-class Files:
-    _credentials_filepath: str = r'Credentials\Credentials.json'
-    _common_messages_filepath: str = r'Data\messages.json'
-    _menus_filepath: str = r'Data\menus.json'
-
-    _json_credentials: Dict[str, str] = None
-    _bot_token: str = ''
-
-    _common_messages: Dict[str, str] = None
-
-    _menus: Dict[str, str] = None
-
-    def open_files(self) -> None:
-        if (os.path.isfile(self._credentials_filepath)):
-            with open(self._credentials_filepath, 'r') as fin:
-                self._json_credentials = json.load(fin)
-                self._bot_token = self._json_credentials['BOT_TOKEN']
-
-        if (os.path.isfile(self._common_messages)):
-            with open(self._common_messages_filepath, 'r') as fin:
-                self._common_messages = json.load(fin)
-
-        if (os.path.isfile(self._menus_filepath)):
-            with open(self._menus_filepath, 'r') as fin:
-                self._menus = json.load(fin)
-
-    def save_menus() -> None:
-        with open(self._menus_filepath, 'w') as fout:
-            json.dump(self._menus, fout)
-
-    @property
-    def BOT_TOKEN(self) -> str:
-        return self._bot_token
-
-    @property
-    def help_message(self) -> str:
-        return self._common_messages.get('help', '')
-
-    @property
-    def menu_message(self) -> str:
-        return self._common_messages.get('menu', '')
-
-    @property
-    def menus(self) -> Dict[str, str]:
-        return self._menus
+from src import files as fls
 
 
 if __name__ == "__main__":
 
-    files = Files()
+    files = fls.Files()
     files.open_files()
 
     bot = telebot.TeleBot(files.BOT_TOKEN)
@@ -67,17 +18,23 @@ if __name__ == "__main__":
         bot.reply_to(message, files.help_message)
 
     @bot.message_handler(commands=['menu'])
-    def get_menu(message):
+    def create_menu(message):
         text = message.text
-        sender = message.chat.id
         menus = files.menus
 
         menu = uts.parse_menu(text)
-        menus.update({sender: menu})
-
-        files.save_menus()
-
-        bot.reply_to(message, "Menu saved")
+        print(menu)
+        menu_code = uts.generate_code(menu.keys())
+        
+        menus.update({menu_code: menu})
+       
+        upload_result = uts.load_menu(menu_code, menu)
+    
+        if upload_result:
+            files.save_menus()
+            bot.reply_to(message, f"Menu saved with code: {menu_code}")
+        else:
+            bot.reply_to(message, f"Errore nel caricamento del menù")
 
     @bot.message_handler(commands=['riassunto'])
     def help(message):
