@@ -38,7 +38,7 @@ if __name__ == "__main__":
 
     @bot.message_handler(commands=['riassunto'])
     def help(message):
-        menu_code = message.text.strip()
+        menu_code = message.text.split(" ")[-1].strip()
         sender = message.chat.id
 
         menu_recap = uts.recap(sender, menu_code)

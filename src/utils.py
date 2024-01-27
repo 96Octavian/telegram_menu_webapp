@@ -13,7 +13,7 @@ def parse_menu(text : str) -> dict:
     # The first token must be the menu name
     # title = tokens[0].strip()
     title = "Offerings"
-    menu = { "Offerings": {}}
+    menu = { "Offerings": {}, "Active" : True}
     
     curr_level = ""
     curr_dishes = []
@@ -39,10 +39,10 @@ def parse_menu(text : str) -> dict:
 def recap(sender : str, menu_code : str) -> str:  
     orders = json.load(open(".\\Data\\order.json", "r")) 
     
-    # TODO add the selection by sender code
+    # TODO add the selection by menu code
     orders = orders[menu_code]
     
-    recap_dict = defaultdict(0)
+    recap_dict = defaultdict(lambda: 0)
     
     for single_order in orders.values():
         for plate, amount in single_order.items():
