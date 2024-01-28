@@ -12,8 +12,8 @@ def parse_menu(text : str) -> dict:
     
     # The first token must be the menu name
     # title = tokens[0].strip()
-    title = "Offerings"
-    menu = { "Offerings": {}, "Active" : True}
+    title = "offerings"
+    menu = { title: {}, "active" : True}
     
     curr_level = ""
     curr_dishes = []
@@ -59,7 +59,7 @@ def generate_code(menu_codes: list):
     
     return code
 
-def load_menu(menu_code, menu : dict) -> bool:
+def upload_to_pantry(menu_code, menu : dict) -> bool:
     # Post a new menu (or overwrite one with the same code)
     try:
         result = requests.post(
@@ -74,7 +74,7 @@ def load_menu(menu_code, menu : dict) -> bool:
     except:
         return False
 
-def close_menu(menu_code : str) -> bool:
+def delete_from_pantry(menu_code : str) -> bool:
     # Remove a menu
     try:
         result = requests.delete(
