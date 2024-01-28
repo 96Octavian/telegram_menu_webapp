@@ -36,6 +36,11 @@ if __name__ == "__main__":
         else:
             bot.reply_to(message, f"Errore nel caricamento del menù")
 
+    # TODO Add order function @LOCKE
+    @bot.message_handler(commands=['ordina'])
+    def create_menu(message):
+        pass
+    
     @bot.message_handler(commands=['riassunto'])
     def help(message):
         menu_code = message.text.split(" ")[-1].strip()
