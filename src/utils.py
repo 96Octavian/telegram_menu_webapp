@@ -48,7 +48,7 @@ def recap(sender : str, menu_code : str) -> str:
         for plate, amount in single_order.items():
             recap_dict[plate] += amount
 
-    recap_dict = json.dumps(dict(recap_dict))
+    recap_dict = json.dumps(dict(recap_dict), indent=4,)
     
     return recap_dict
         
@@ -73,3 +73,15 @@ def load_menu(menu_code, menu : dict) -> bool:
             return True
     except:
         return False
+
+def close_menu(menu_code : str) -> bool:
+    # Remove a menu
+    try:
+        result = requests.delete(
+            f"https://getpantry.cloud/apiv1/pantry/17474c8e-ea5a-4857-a468-744bad4d466b/basket/{menu_code}"
+        )
+        if result.status_code != requests.codes.ok:
+            return True
+    except:
+        return False
+    return False

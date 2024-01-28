@@ -1,1 +1,4 @@
-{"AAAAA": {"Offerings": {"FIRST": ["Pasta", "Pane"], "SWEET": ["strudel"]}, "Active": true}, "PLPHM": {"Offerings": {"FIRST": ["pasta"], "SECOND": ["locke_culo"]}, "Active": true}, "KFXBT": {"Offerings": {"FIRST": ["pasta"], "SECOND": ["locke_culo"]}, "Active": true}}
+{
+"PLPHM": {"Offerings": {"FIRST": ["pasta"], "SECOND": ["locke_culo"]}, "Active": true, "Creator_ID" : "477774602"}, 
+"KFXBT": {"Offerings": {"FIRST": ["pasta"], "SECOND": ["locke_culo"]}, "Active": true, "Creator_ID" : "477774602"}
+}
