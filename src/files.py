@@ -20,7 +20,7 @@ class MultiLanguageMessage:
         return self._description
 
     def get(self, language='en'):
-        return self._message.get(language if language else "en", "")
+        return self._message.get(language if language else "en", self.description)
 
 
 class CommonMessages:
