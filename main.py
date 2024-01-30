@@ -31,11 +31,13 @@ if __name__ == "__main__":
     @bot.message_handler(commands=['menu'])
     def command_menu(message):
         lang = message.from_user.language_code
-        # TODO: creator_id missing in menu creation
         text = message.text
 
-        menus = files.menus
         menu = uts.parse_menu(text)
+        sender = message.from_user.id
+        menu['creator_id'] = str(sender)
+
+        menus = files.menus
         menu_code = uts.generate_code(menus.keys())
         # menus.update({menu_code: menu})   # Updating a dict is a cotly operation we can avoid in this case; doing it before checking upload_results also means we're already updating files.menus as they're referencing the same object
 
