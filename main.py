@@ -117,12 +117,30 @@ if __name__ == "__main__":
 
     @bot.message_handler(commands=['summary'])
     def command_summary(message):
+        lang = message.from_user.language_code
         menu_code = message.text.split(" ")[-1].strip()
-        sender = message.chat.id
+        menu = files.menus.get(menu_code, None)
+        if not menu:
+            bot.reply_to(
+                message,
+                files.common_messages.menu_not_found.get(lang)
+            )
+            return
 
-        menu_recap = uts.recap(sender, menu_code)
+        sender = message.from_user.id
+        if menu['creator_id'] != sender:
+            reply = (
+                files
+                .common_messages
+                .not_the_creator
+                .get(lang)
+            )
+            bot.reply_to(message, reply)
+            return
 
-        bot.reply_to(message, menu_recap)
+        menu_message = uts.recap(menu)
+        
+        bot.reply_to(message, menu_message)
 
     @bot.message_handler(commands=['open'])
     def command_open(message):

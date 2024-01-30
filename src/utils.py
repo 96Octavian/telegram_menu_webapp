@@ -3,6 +3,7 @@ from collections import defaultdict
 import random
 import string
 import requests
+from src.files import Menu
 
 
 def parse_menu(text: str) -> dict:
@@ -42,21 +43,24 @@ def parse_menu(text: str) -> dict:
     return menu
 
 
-def recap(sender: str, menu_code: str) -> str:
-    orders = json.load(open(".\\Data\\order.json", "r"))
+def recap(menu: Menu) -> str:
+    summary = {category: {dish: 0 for dish in menu[category]} for category in menu['offerings']}
+    for user, choices in menu['orders'].items():
+        for course, meals in choices.items():
+            if course not in summary:
+                continue
+            for meal, amount in meals.items():
+                if meal not in summary[course]:
+                    continue
+                summary[course][meal] += amount
+    
+    menu_message = ""
+    for course, meals in summary.items():
+        menu_message += f"{course}\n"
+        for meal, amount in meals.items():
+            menu_message += f"\t{amount}x {meal}\n"
 
-    # TODO add the selection by menu code
-    orders = orders[menu_code]
-
-    recap_dict = defaultdict(lambda: 0)
-
-    for single_order in orders.values():
-        for plate, amount in single_order.items():
-            recap_dict[plate] += amount
-
-    recap_dict = json.dumps(dict(recap_dict), indent=4,)
-
-    return recap_dict
+    return menu_message
 
 
 def generate_code(menu_codes: list):
