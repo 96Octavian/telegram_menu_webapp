@@ -44,7 +44,7 @@ def parse_menu(text: str) -> dict:
 
 
 def recap(menu: Menu) -> str:
-    summary = {category: {dish: 0 for dish in menu[category]} for category in menu['offerings']}
+    summary = {category: {dish: 0 for dish in menu['offerings'][category]} for category in menu['offerings']}
     for user, choices in menu['orders'].items():
         for course, meals in choices.items():
             if course not in summary:
@@ -56,8 +56,12 @@ def recap(menu: Menu) -> str:
     
     menu_message = ""
     for course, meals in summary.items():
+        if not sum(meals.values()):
+            continue
         menu_message += f"{course}\n"
         for meal, amount in meals.items():
+            if not amount:
+                continue
             menu_message += f"\t{amount}x {meal}\n"
 
     return menu_message
