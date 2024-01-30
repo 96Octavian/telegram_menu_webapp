@@ -15,7 +15,17 @@ if __name__ == "__main__":
 
     @bot.message_handler(commands=['start', 'help'])
     def help(message):
-        bot.reply_to(message, files.common_messages.help_message.get(message.from_user.language_code))
+        reply = (
+            files
+            .common_messages
+            .help_message
+            .get(message.from_user.language_code)
+        )
+        bot.reply_to(
+            message,
+            reply,
+            parse_mode='HTML'
+        )
 
     @bot.message_handler(commands=['menu'])
     def command_menu(message):
