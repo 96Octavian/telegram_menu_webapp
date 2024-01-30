@@ -4,7 +4,7 @@
         "it": "Ciao, sono il tuo super fantastico menu bot! Lascia che ti spieghi i miei comandi!\nInvia <code>/menu</code> seguito dai piatti del menu, ognuno su una riga separata; un '.' (punto fermo) all'inizio della riga indica una nuova portata, per esempio:\n\n/menu\n.Primi piatti\nPasta al sugo rosso\nPasta senza sugo rosso\nGnocchi al salmone\n.Secondi piatti\nLasagna\nHamburger\n.Contorni\nPatatine fritte\n.Pizze\nMargherita\nWurstel\nBismark\n\nVerrà creato un menu e riceverai un codice menu: condividilo così che anche altri possano fare i propri ordini.\nOrdina inviando <code>/order codice_menu</code>.\nQuando tutti avranno fatto i propri ordini, puoi avere un riassunto inviando <code>/summary codice_menu</code>.\nPer fermare le ordinazioni, invia <code>/close codice_menu</code> e il bot rifiuterà di prendere nuovi ordini dagli utenti; se dovessi cambiare idea, invia <code>/open codice_menu<code> per permettere nuovamente gli ordini."
     },
     "menu_saved_with_code": {
-        "en": "Menu saved with code: {menu_code}",
+        "en": "Menu saved with code: <code>{menu_code}</code>",
         "it": "Menu salvato con codice: {menu_code}"
     },
     "upload_error": {

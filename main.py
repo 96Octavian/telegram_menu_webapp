@@ -2,6 +2,7 @@ import telebot
 from telebot import types
 from src import utils as uts
 from src import files as fls
+import json
 
 
 if __name__ == "__main__":
@@ -51,7 +52,7 @@ if __name__ == "__main__":
                 .get(lang)
                 .format(menu_code=menu_code)
             )
-            bot.reply_to(message, reply)
+            bot.reply_to(message, reply,parse_mode='HTML')
         else:
             reply = (
                 files
@@ -128,7 +129,7 @@ if __name__ == "__main__":
             return
 
         sender = message.from_user.id
-        if menu['creator_id'] != sender:
+        if menu['creator_id'] != str(sender):
             reply = (
                 files
                 .common_messages
@@ -150,7 +151,7 @@ if __name__ == "__main__":
 
         reply = ""
         try:
-            if menus[menu_code]["creator_id"] == message.chat.id:
+            if menus[menu_code]["creator_id"] == str(message.chat.id):
                 open_result = uts.upload_to_pantry(menu_code, menus[menu_code])
                 if open_result:
                     menus[menu_code]["active"] = True
@@ -196,7 +197,7 @@ if __name__ == "__main__":
 
         reply = ""
         try:
-            if menus[menu_code]["creator_id"] == message.chat.id:
+            if menus[menu_code]["creator_id"] == str(message.chat.id):
                 closure = uts.delete_from_pantry(menu_code)
                 if closure:
                     menus[menu_code]["active"] = False
