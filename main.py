@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     @bot.message_handler(commands=['start', 'help'])
     def help(message):
-        bot.reply_to(message, files.help_message)
+        bot.reply_to(message, files.common_messages.help_message.get(message.from_user.language_code))
 
     @bot.message_handler(commands=['menu'])
     def command_menu(message):
@@ -32,16 +32,16 @@ if __name__ == "__main__":
             # files.menus = menus   # The following line is already enough (menus and files.menus are the same object)
             menus[menu_code] = menu
             files.save_menus()
-            bot.reply_to(message, f"Menu saved with code: {menu_code}")
+            bot.reply_to(message, files.common_messages.menu_saved_with_code.get(message.from_user.language_code).format(menu_code=menu_code))
         else:
-            bot.reply_to(message, f"Error uploading menu")
+            bot.reply_to(message, files.common_messages.upload_error.get(message.from_user.language_code))
 
     @bot.message_handler(commands=['order'])
     def command_order(message):
         menu_code = message.text.split(" ")[-1].strip()
 
         button = types.KeyboardButton(
-            "Place order",
+            files.common_messages.place_order.get(message.from_user.language_code),
             web_app=types.WebAppInfo(
                 f'https://96Octavian.github.io/menu_webapp/?code={menu_code}'
             )
@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
         bot.reply_to(
             message,
-            text='Open the keyboard and press to place your order',
+            text=files.common_messages.place_order_message.get(message.from_user.language_code),
             reply_markup=kb
         )
 
@@ -68,6 +68,7 @@ if __name__ == "__main__":
     def command_open(message):
         menu_code = message.text.split(" ")[-1].strip()
         menus = files.menus
+        lang = message.from_user.language_code
 
         reply = ""
         try:
@@ -77,13 +78,13 @@ if __name__ == "__main__":
                     menus[menu_code]["active"] = True
                     # files.menus = menus   # Not needed -menus is a reference to files.menus, it's the same dictionary
                     files.save_menus()
-                    reply = f"Menu {menu_code} open"
+                    reply = files.common_messages.menu_open_with_code.get(lang).format(menu_code=menu_code)
                 else:
-                    reply = f"Unable to open menu {menu_code}"
+                    reply = files.common_messages.menu_open_with_code_error.get(lang).format(menu_code=menu_code)
             else:
-                reply = f"You're not the creator of the menu! Go away!"
+                reply = files.common_messages.not_the_creator.get(lang)
         except:
-            reply = f"Menu code not found!"
+            reply = files.common_messages.menu_not_found.get(lang)
 
         bot.reply_to(message, reply)
 
@@ -91,6 +92,7 @@ if __name__ == "__main__":
     def command_close(message):
         menu_code = message.text.split(" ")[-1].strip()
         menus = files.menus
+        lang = message.from_user.language_code
 
         reply = ""
         try:
@@ -100,13 +102,13 @@ if __name__ == "__main__":
                     menus[menu_code]["active"] = False
                     # files.menus = menus   # Not needed -menus is a reference to files.menus, it's the same dictionary
                     files.save_menus()
-                    reply = f"Menu {menu_code} closed"
+                    reply = files.common_messages.menu_close_with_code.get(lang).format(menu_code=menu_code)
                 else:
-                    reply = f"Unable to close menu {menu_code}"
+                    reply = files.common_messages.menu_open_with_code_error.get(lang).format(menu_code=menu_code)
             else:
-                reply = f"You're not the creator of the menu! Go away!"
+                reply = files.common_messages.not_the_creator.get(lang)
         except:
-            reply = f"Menu code not found!"
+            reply = files.common_messages.menu_not_found.get(lang)
 
         bot.reply_to(message, reply)
 

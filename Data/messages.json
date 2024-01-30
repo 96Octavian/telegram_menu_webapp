@@ -1,4 +1,46 @@
 {
-    "help" : "Hi there, I'm your super fantastic menu bot! Let me explain my commands!\nSend '/menu' followed by the dishes for the menu, each one on a new line; a '.' (dot) in front of a dish indicates a new course, for example:\n/menu\n.Main course\nPasta with red sauce\nPasta without red sauce\nsalmon dumplings\n.Second course\nLasagna\nHamburger\n.Side dishes\nFries\n.Pizzas\nMargherita\nWurstel\nBismark\n\nThe menu will be created and you will receive back a menu code: share this menu code so that others can place their orders. Place an order by sending '/order menu_code'. Once everyone placed their order, you can get a summary by sending '/summary menu_code.\nTo halt ordinations, send '/close menu_code' and the bot will refuse to take new orders from users; if you change your mind, send '/open menu_code' to allow orders to be placed again.",
-    "menu" : "/menu: followed by the menu that you want to insert in the format of \nMENU TITLE\nFIRST\nplate\n...\nplate\n\nSECOND\nplate\n...\nplate\n\nCONTOUR\nplate\n...\npalte\n\nSWEET\nsweet\n..\nsweet\n\nDRINK\ndrink\n...\ndrink\n\n It is important to respect the upper case keywords. You don't have to put all of them, but they must be written in the same way."
+    "help_message": {
+        "en": "Hi there, I'm your super fantastic menu bot! Let me explain my commands!\nSend '/menu' followed by the dishes for the menu, each one on a new line; a '.' (dot) in front of a dish indicates a new course, for example:\n/menu\n.Main course\nPasta with red sauce\nPasta without red sauce\nsalmon dumplings\n.Second course\nLasagna\nHamburger\n.Side dishes\nFries\n.Pizzas\nMargherita\nWurstel\nBismark\n\nThe menu will be created and you will receive back a menu code: share this menu code so that others can place their orders. Place an order by sending '/order menu_code'. Once everyone placed their order, you can get a summary by sending '/summary menu_code'.\nTo halt ordinations, send '/close menu_code' and the bot will refuse to take new orders from users; if you change your mind, send '/open menu_code' to allow orders to be placed again.",
+        "it": "Ciao, sono il tuo super fantastico menu bot! Lascia che ti spieghi i miei comandi!\nInvia '/menu' seguito dai piatti del menu, ognuno su una riga separata; un '.' (punto fermo) all'inizio della riga indica una nuova portata, per esempio:\n/menu\n.Primi piatti\nPasta al sugo rosso\nPasta senza sugo rosso\nGnocchi al salmone\n.Secondi piatti\nLasagna\nHamburger\n.Contorni\nPatatine fritte\n.Pizze\nMargherita\nWurstel\nBismark\n\nVerrà creato un menu e riceverai un codice menu: condividilo così che anche altri possano fare i propri ordini. Ordina inviando '/order codice_menu'. Quanto tutti avranno fatto i propri ordini, puoi avere un riassunto inviando '/summary codice_menu'.\nPer fermare le ordinazioni, invia '/close codice_menu' e il bot rifiuterà di prendere nuovi ordini dagli utenti; se dovessi cambiare idea, invia '/open codice_menu' per permettere nuovamente gli ordini."
+    },
+    "menu_saved_with_code": {
+        "en": "Menu saved with code: {menu_code}",
+        "it": "Menu salvato con codice: {menu_code}"
+    },
+    "upload_error": {
+        "en": "Error uploading menu",
+        "it": "Errore nell'upload del menu"
+    },
+    "place_order": {
+        "en": "Place order",
+        "it": "Ordina"
+    },
+    "place_order_message": {
+        "en": "Open the keyboard and press to place your order",
+        "it": "Apri la tastiera e ordina"
+    },
+    "menu_open_with_code": {
+        "en": "Menu {menu_code} open",
+        "it": "Menu {menu_code} aperto"
+    },
+    "menu_closed_with_code": {
+        "en": "Menu {menu_code} closed",
+        "it": "Menu {menu_code} chiuso"
+    },
+    "menu_open_with_code_error": {
+        "en": "Unable to open menu {menu_code}",
+        "it": "Impossibile aprire il menu {menu_code}"
+    },
+    "menu_closed_with_code_error": {
+        "en": "Unable to close menu {menu_code}",
+        "it": "Impossibile chiudere il menu {menu_code}"
+    },
+    "not_the_creator": {
+        "en": "You're not the creator of the menu! Go away!",
+        "it": "Non sei il creatore del menu! Va' via!"
+    },
+    "menu_not_found": {
+        "en": "Menu not found",
+        "it": "Menu non trovato"
+    }
 }

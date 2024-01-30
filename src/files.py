@@ -7,6 +7,33 @@ MenuOrder = dict[str, dict[str, int]]   # {course: {dish: amount}}
 Menu = dict[str, int | str | MenuOrder | dict[int, MenuOrder]]
 
 
+class MultiLanguageMessage:
+    _description: str = ""
+    _message: dict[str, str] = {}
+
+    def __init__(self, description: str, message: dict[str, str]):
+        self._description = description
+        self._message = dict(message)
+
+    @property
+    def description(self) -> str:
+        return self._description
+
+    def get(self, language='en'):
+        return self._message.get(language if language else "en", "")
+
+
+class CommonMessages:
+    def __init__(self, messages: dict[str, dict[str, str]]):
+        # if 'upload_failed' in messages:
+        #     self._upload_failed = MultiLanguageMessage(messages['upload_failed'])
+        # if 'help_message' in messages:
+        #     self._upload_failed = MultiLanguageMessage(messages['help_message'])
+        for key, value in messages.items():
+            mm = MultiLanguageMessage(key, value)
+            self.__setattr__(mm.description, mm)
+
+
 class Files:
     _credentials_filepath: str = r'Credentials\\Credentials.json'
     _common_messages_filepath: str = r'Data\\messages.json'
@@ -14,7 +41,7 @@ class Files:
 
     _bot_token: str = ''
 
-    _common_messages: Dict[str, str] = None
+    _common_messages: CommonMessages = None
 
     _menus: Dict[str, str] = None
 
@@ -27,9 +54,11 @@ class Files:
 
         if (os.path.isfile(self._common_messages_filepath)):
             with open(self._common_messages_filepath, 'r') as fin:
-                self._common_messages = json.load(fin)
+                common_messages_dict = json.load(fin)
+            cm = CommonMessages(common_messages_dict)
+            self._common_messages = cm
         else:
-            print(f"NO messages found at {self._common_messages_filepath}")
+            print(f"No messages found at {self._common_messages_filepath}")
 
         if (os.path.isfile(self._menus_filepath)):
             with open(self._menus_filepath, 'r') as fin:
@@ -48,12 +77,8 @@ class Files:
         return self._pantry_token
 
     @property
-    def help_message(self) -> str:
-        return "\n".join(self._common_messages.values())
-
-    @property
-    def menu_message(self) -> str:
-        return self._common_messages.get('menu', '')
+    def common_messages(self) -> CommonMessages:
+        return self._common_messages
 
     @property
     def menus(self) -> Dict[str, str]:
