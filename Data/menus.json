@@ -1,4 +1,26 @@
 {
-"PLPHM": {"Offerings": {"FIRST": ["pasta"], "SECOND": ["locke_culo"]}, "Active": true, "Creator_ID" : "477774602"}, 
-"KFXBT": {"Offerings": {"FIRST": ["pasta"], "SECOND": ["locke_culo"]}, "Active": true, "Creator_ID" : "477774602"}
+    "PLPHM": {
+        "offerings": {
+            "FIRST": [
+                "pasta"
+            ],
+            "SECOND": [
+                "locke_culo"
+            ]
+        },
+        "active": true,
+        "creator_id": "477774602"
+    },
+    "KFXBT": {
+        "offerings": {
+            "FIRST": [
+                "pasta"
+            ],
+            "SECOND": [
+                "locke_culo"
+            ]
+        },
+        "active": true,
+        "creator_id": "477774602"
+    }
 }

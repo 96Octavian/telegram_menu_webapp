@@ -42,5 +42,17 @@
     "menu_not_found": {
         "en": "Menu not found",
         "it": "Menu non trovato"
+    },
+    "order_received":{
+        "en": "Order received",
+        "it": "Ordine ricevuto"
+    },
+    "order_not_found": {
+        "en": "Order not found",
+        "it": "Ordine non trovato"
+    },
+    "order_revoked": {
+        "en": "Order revoked",
+        "it": "Ordine revocato"
     }
 }

@@ -29,6 +29,8 @@ if __name__ == "__main__":
 
     @bot.message_handler(commands=['menu'])
     def command_menu(message):
+        lang = message.from_user.language_code
+        # TODO: creator_id missing in menu creation
         text = message.text
 
         menus = files.menus
@@ -42,16 +44,30 @@ if __name__ == "__main__":
             # files.menus = menus   # The following line is already enough (menus and files.menus are the same object)
             menus[menu_code] = menu
             files.save_menus()
-            bot.reply_to(message, files.common_messages.menu_saved_with_code.get(message.from_user.language_code).format(menu_code=menu_code))
+            reply = (
+                files
+                .common_messages
+                .menu_saved_with_code
+                .get(lang)
+                .format(menu_code=menu_code)
+            )
+            bot.reply_to(message, reply)
         else:
-            bot.reply_to(message, files.common_messages.upload_error.get(message.from_user.language_code))
+            reply = (
+                files
+                .common_messages
+                .upload_error
+                .get(lang)
+            )
+            bot.reply_to(message, reply)
 
     @bot.message_handler(commands=['order'])
     def command_order(message):
         menu_code = message.text.split(" ")[-1].strip()
 
         button = types.KeyboardButton(
-            files.common_messages.place_order.get(message.from_user.language_code),
+            files.common_messages.place_order.get(
+                message.from_user.language_code),
             web_app=types.WebAppInfo(
                 f'https://96Octavian.github.io/menu_webapp/?code={menu_code}'
             )
@@ -61,9 +77,43 @@ if __name__ == "__main__":
 
         bot.reply_to(
             message,
-            text=files.common_messages.place_order_message.get(message.from_user.language_code),
+            text=files.common_messages.place_order_message.get(
+                message.from_user.language_code),
             reply_markup=kb
         )
+
+    @bot.message_handler(commands=['revoke_order'])
+    def command_revoke(message):
+        lang = message.from_user.language_code
+        order = json.loads(message.web_app_data.data)
+        menu_code = order['code']
+        menu = files.menus.get(menu_code, None)
+        if not menu:
+            bot.reply_to(
+                message,
+                files.common_messages.menu_not_found.get(lang)
+            )
+            return
+
+        order = menu['orders'].pop(message.from_user.id, None)
+        if not order:
+            reply = (
+                files
+                .common_messages
+                .order_not_found
+                .get(lang)
+            )
+            bot.reply_to(message, reply)
+            return
+
+        files.save_menus()
+        reply = (
+            files
+            .common_messages
+            .order_revoked
+            .get(lang)
+        )
+        bot.reply_to(message, reply)
 
     @bot.message_handler(commands=['summary'])
     def command_summary(message):
@@ -88,13 +138,35 @@ if __name__ == "__main__":
                     menus[menu_code]["active"] = True
                     # files.menus = menus   # Not needed -menus is a reference to files.menus, it's the same dictionary
                     files.save_menus()
-                    reply = files.common_messages.menu_open_with_code.get(lang).format(menu_code=menu_code)
+                    reply = (
+                        files
+                        .common_messages
+                        .menu_open_with_code
+                        .get(lang)
+                        .format(menu_code=menu_code)
+                    )
                 else:
-                    reply = files.common_messages.menu_open_with_code_error.get(lang).format(menu_code=menu_code)
+                    reply = (
+                        files
+                        .common_messages
+                        .menu_open_with_code_error
+                        .get(lang)
+                        .format(menu_code=menu_code)
+                    )
             else:
-                reply = files.common_messages.not_the_creator.get(lang)
+                reply = (
+                    files
+                    .common_messages
+                    .not_the_creator
+                    .get(lang)
+                )
         except:
-            reply = files.common_messages.menu_not_found.get(lang)
+            reply = (
+                files
+                .common_messages
+                .menu_not_found
+                .get(lang)
+            )
 
         bot.reply_to(message, reply)
 
@@ -112,9 +184,21 @@ if __name__ == "__main__":
                     menus[menu_code]["active"] = False
                     # files.menus = menus   # Not needed -menus is a reference to files.menus, it's the same dictionary
                     files.save_menus()
-                    reply = files.common_messages.menu_close_with_code.get(lang).format(menu_code=menu_code)
+                    reply = (
+                        files
+                        .common_messages
+                        .menu_close_with_code
+                        .get(lang)
+                        .format(menu_code=menu_code)
+                    )
                 else:
-                    reply = files.common_messages.menu_open_with_code_error.get(lang).format(menu_code=menu_code)
+                    reply = (
+                        files
+                        .common_messages
+                        .menu_open_with_code_error
+                        .get(lang)
+                        .format(menu_code=menu_code)
+                    )
             else:
                 reply = files.common_messages.not_the_creator.get(lang)
         except:
@@ -124,12 +208,31 @@ if __name__ == "__main__":
 
     @bot.message_handler(content_types=['web_app_data'])
     def handle_web_app_data(message):
+        lang = message.from_user.language_code
+        order = json.loads(message.web_app_data.data)
+        menu_code = order['code']
+        menu = files.menus.get(menu_code, None)
+        if not menu:
+            bot.send_message(
+                message.chat.id,
+                files.common_messages.menu_not_found.get(lang)
+            )
+            return
+
+        menu['orders'][message.from_user.id] = order['choices']
+        files.save_menus()
+
         hideBoard = types.ReplyKeyboardRemove()
-        print(message.web_app_data.data)
         bot.send_message(
             message.chat.id,
-            message.web_app_data.data,
+            files.common_messages.order_received.get(lang),
             reply_markup=hideBoard
         )
+        menu_message = ""
+        for course, meals in order['choices'].items():
+            menu_message += f"{course}\n"
+            for meal, amount in meals.items():
+                menu_message += f"\t{amount}x {meal}\n"
+        bot.send_message(message.chat_id, menu_message)
 
     bot.infinity_polling()
