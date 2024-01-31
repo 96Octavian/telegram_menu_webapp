@@ -25,9 +25,6 @@ def parse_menu(text: str) -> dict:
         else:
             course.append(line)
 
-    # To add the last one
-    menu[title].update({curr_level: curr_dishes})
-
     return menu
 
 
@@ -85,8 +82,10 @@ def delete_from_pantry(menu_code: str) -> bool:
         result = requests.delete(
             f"https://getpantry.cloud/apiv1/pantry/17474c8e-ea5a-4857-a468-744bad4d466b/basket/{menu_code}"
         )
-        if result.status_code != requests.codes.ok:
+        if result.status_code == requests.codes.ok:
             return True
-    except:
+        else:
+            return False
+    except Exception as ex:
+        print(ex)
         return False
-    return False

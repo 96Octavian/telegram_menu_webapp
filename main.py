@@ -208,7 +208,7 @@ if __name__ == "__main__":
                     reply = (
                         files
                         .common_messages
-                        .menu_close_with_code
+                        .menu_closed_with_code
                         .get(lang)
                         .format(menu_code=menu_code)
                     )
@@ -216,7 +216,7 @@ if __name__ == "__main__":
                     reply = (
                         files
                         .common_messages
-                        .menu_open_with_code_error
+                        .menu_closed_with_code_error
                         .get(lang)
                         .format(menu_code=menu_code)
                     )
@@ -267,6 +267,6 @@ if __name__ == "__main__":
             menu_message += f"{course}\n"
             for meal, amount in meals.items():
                 menu_message += f"\t{amount}x {meal}\n"
-        bot.send_message(message.chat_id, menu_message)
+        bot.send_message(message.chat.id, menu_message)
 
     bot.infinity_polling()
