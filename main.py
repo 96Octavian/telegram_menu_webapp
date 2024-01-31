@@ -240,6 +240,19 @@ if __name__ == "__main__":
             )
             return
 
+        if not menu['active']:
+            reply = (
+                files
+                .common_messages
+                .menu_close_with_code
+                .format(menu_code=menu_code)
+            )
+            bot.send_message(
+                message.chat.id,
+                reply
+            )
+            return
+            
         menu['orders'][message.from_user.id] = order['choices']
         files.save_menus()
 
