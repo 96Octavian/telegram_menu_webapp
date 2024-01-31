@@ -7,23 +7,38 @@ from src.files import Menu
 
 
 def parse_menu(text: str) -> dict:
-    text = text.replace('/menu', '').strip()
+    KEYWORDS = ["FIRST", "SECOND", "CONTOUR", "SWEET", "DRINK"]
 
+    # Split the text and filter out possible empty rows, remove the first, the command
+    tokens = list(filter(lambda s: len(s) > 0, text.split("\n")))[1:]
+
+    # The first token must be the menu name
+    # title = tokens[0].strip()
+    title = "offerings"
     menu = {
-        'offerings': {},
-        'active': True,
+        title: {},
+        "active": True,
         'orders': {}
     }
-    course = []
-    for line in text.split('\n'):
-        # print(f"Handling line \"{line}\"")
-        line = line.strip()
-        if line[0] == '.':
-            line = line[1:].strip()
-            menu['offerings'][line] = []
-            course = menu['offerings'][line]
+
+    curr_level = ""
+    curr_dishes = []
+    for token in tokens[1:]:
+        # Sanitize
+        token = token.strip()
+
+        if token in KEYWORDS:
+            # If it is not the first menu level, save the previous with all of its dishes
+            if curr_level != "":
+                menu[title].update({curr_level: curr_dishes})
+                curr_dishes = []
+            curr_level = token
+
         else:
-            course.append(line)
+            curr_dishes.append(token)
+
+    # To add the last one
+    menu[title].update({curr_level: curr_dishes})
 
     return menu
 
